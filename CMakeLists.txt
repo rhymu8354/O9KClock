@@ -26,7 +26,7 @@ target_link_libraries(${This} PUBLIC
 
 add_subdirectory(test)
 
-add_executable(Bob src/Bob.cpp)
+add_executable(Bob src/bob.cpp)
 target_link_libraries(Bob PUBLIC
     ${This}
     SystemAbstractions
