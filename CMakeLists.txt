@@ -21,13 +21,12 @@ set_target_properties(${This} PROPERTIES
 target_include_directories(${This} PUBLIC include)
 
 target_link_libraries(${This} PUBLIC
-    SystemAbstractions
 )
 
 add_subdirectory(test)
 
-add_executable(Bob src/bob.cpp)
-target_link_libraries(Bob PUBLIC
-    ${This}
-    SystemAbstractions
-)
+#add_executable(Bob src/bob.cpp)
+#target_link_libraries(Bob PUBLIC
+#    ${This}
+#    SystemAbstractions
+#)

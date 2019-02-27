@@ -6,9 +6,8 @@
  * © 2018 by Richard Walters
  */
 
+#include <chrono>
 #include <O9KClock/Clock.hpp>
-#include <SystemAbstractions/Time.hpp>
-#include <time.h>
 
 namespace O9K {
 
@@ -16,10 +15,6 @@ namespace O9K {
      * This contains the private properties of a Clock instance.
      */
     struct Clock::Impl {
-        /**
-         * This is used to interface with the operating system's notion of time.
-         */
-        SystemAbstractions::Time time;
     };
 
     Clock::~Clock() noexcept = default;
@@ -32,9 +27,10 @@ namespace O9K {
     }
 
     double Clock::GetTime() {
-        static const auto startTimeHighRes = impl_->time.GetTime();
-        static const auto startTimeReal = (double)time(NULL);
-        return startTimeReal + (impl_->time.GetTime() - startTimeHighRes);
+        const auto now = std::chrono::system_clock::now();
+        return std::chrono::duration_cast< std::chrono::microseconds >(
+            now.time_since_epoch()
+        ).count() / 1000000.0;
     }
 
 }
