@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <chrono>
 #include <math.h>
+#include <mutex>
 #include <O9KClock/Clock.hpp>
 
 namespace {
@@ -65,6 +66,11 @@ namespace O9K {
         double lastSteadyClockSample = 0.0;
 
         /**
+         * This is used to serialize access to the clock.
+         */
+        std::mutex mutex;
+
+        /**
          * Measure the difference between the steady clock and the system
          * clock, and reset the output offset.
          */
@@ -95,6 +101,7 @@ namespace O9K {
     }
 
     double Clock::GetTime() {
+        std::lock_guard< decltype(impl_->mutex) > lock(impl_->mutex);
         const auto systemTime = impl_->systemClock();
         const auto steadyTime = impl_->steadyClock();
         const auto intervalSinceLastSample = steadyTime - impl_->lastSteadyClockSample;
