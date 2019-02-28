@@ -107,18 +107,16 @@ namespace O9K {
         const auto intervalSinceLastSample = steadyTime - impl_->lastSteadyClockSample;
         const auto now = steadyTime;
         const auto targetOffset = systemTime - now;
-        if (fabs(targetOffset - impl_->outputOffset) * intervalSinceLastSample > TOLERANCE) {
-            if (targetOffset > impl_->outputOffset) {
-                impl_->outputOffset = std::min(
-                    targetOffset,
-                    impl_->outputOffset + intervalSinceLastSample * TOLERANCE
-                );
-            } else {
-                impl_->outputOffset = std::max(
-                    targetOffset,
-                    impl_->outputOffset - intervalSinceLastSample * TOLERANCE
-                );
-            }
+        if (targetOffset > impl_->outputOffset) {
+            impl_->outputOffset = std::min(
+                targetOffset,
+                impl_->outputOffset + intervalSinceLastSample * TOLERANCE
+            );
+        } else {
+            impl_->outputOffset = std::max(
+                targetOffset,
+                impl_->outputOffset - intervalSinceLastSample * TOLERANCE
+            );
         }
         return now + impl_->outputOffset;
     }
