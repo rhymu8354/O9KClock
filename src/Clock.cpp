@@ -105,6 +105,7 @@ namespace O9K {
         const auto systemTime = impl_->systemClock();
         const auto steadyTime = impl_->steadyClock();
         const auto intervalSinceLastSample = steadyTime - impl_->lastSteadyClockSample;
+        impl_->lastSteadyClockSample = steadyTime;
         const auto now = steadyTime;
         const auto targetOffset = systemTime - now;
         if (targetOffset > impl_->outputOffset) {

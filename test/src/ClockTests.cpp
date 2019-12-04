@@ -68,11 +68,15 @@ TEST(O9KClockTests, HandleSuddenTimeJumps) {
     nowSystem += 1.3; // 10.3
     nowSteady += 0.1; // difference now: -1.1 + 1.2 = 0.1
     const auto measure3 = o9kClock.GetTime();
-    nowSystem += 100.0; // 110.3
-    nowSteady += 100.0; // difference still: 0.1
+    nowSystem += 1.0; // 11.3
+    nowSteady += 1.0; // difference still: 0.1
     const auto measure4 = o9kClock.GetTime();
-    EXPECT_NEAR(10.0, measure1, 0.000001);
-    EXPECT_NEAR(10.099, measure2, 0.000001);
-    EXPECT_NEAR(10.201, measure3, 0.000001);
-    EXPECT_NEAR(110.3, measure4, 0.000001);
+    nowSystem += 99.0; // 110.3
+    nowSteady += 99.0; // difference still: 0.1
+    const auto measure5 = o9kClock.GetTime();
+    EXPECT_NEAR(10.0, measure1, 0.000001); // 0.0 + 10.0
+    EXPECT_NEAR(10.099, measure2, 0.000001); // 0.1 + 9.999
+    EXPECT_NEAR(10.200, measure3, 0.000001); // 0.2 + 10.0
+    EXPECT_NEAR(11.21, measure4, 0.000001); // 1.2 + 10.01
+    EXPECT_NEAR(110.3, measure5, 0.000001); // 100.2 + 10.1
 }
